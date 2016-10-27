@@ -18,6 +18,7 @@ public class ListenDAO extends BaseDAO{
     protected static final String RANKING_INDEX = "CREATE INDEX LISTEN_SONG_ID_IDX ON LISTEN (SONG_ID DESC)";
     protected static final String LISTEN_USER_IDX = "CREATE INDEX LISTEN_USER_IDX ON LISTEN (USER_ID)";
     protected static final String LISTEN_ARTIST_IDX ="CREATE INDEX LISTEN_ARTIST_IDX ON LISTEN (ARTIST_ID)";
+    protected static final String LISTEN_DATE_IDX = "CREATE INDEX LISTEN_DATE_IDX ON LISTEN (DATE_ID)";
 
 
     private ListenDAO(){}

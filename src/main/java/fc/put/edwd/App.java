@@ -22,11 +22,12 @@ public class App {
     public static final String REG_EXP_SEP = "<SEP{1}>";
 
     public static void main(String[] args) throws IOException {
-        //TimeIt.code(() -> saveSongsAndArtistToDb());
-        //System.out.println("Songs and artist inserted to DB");
-        //TimeIt.code(() -> fillTimeDb());
+        TimeIt.code(() -> saveSongsAndArtistToDb());
+        System.out.println("Songs and artist inserted to DB");
+        TimeIt.code(() -> fillTimeDb());
         TimeIt.code(() -> saveDateUser());
-        //TimeIt.code(() -> saveListens());
+        TimeIt.code(() -> saveListens());
+        TimeIt.code(() -> BaseDAO.getInstance().createIndexes());
     }
 
     public static void saveSongsAndArtistToDb() {
@@ -43,7 +44,7 @@ public class App {
                 artistNames.add(artist);
                 songs.add(new SongMsg(songId, artist, title));
             });
-           // ArtistDAO.getInstance().insert(artistNames);
+            ArtistDAO.getInstance().insert(artistNames);
             Map<String, Integer> artistMap = ArtistDAO.getInstance().get();
             songs.parallelStream().forEach(songMsg -> songMsg.setArtistId(artistMap.get(songMsg.getArtistName())));
             SongDAO.getInstance().insert(songs);
@@ -104,8 +105,6 @@ public class App {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        System.out.println("Asd");
     }
 
     public static List<String> tokenize(String s){

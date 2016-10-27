@@ -1,5 +1,7 @@
 package fc.put.edwd.dao.message;
 
+import java.sql.Date;
+import java.time.Instant;
 import java.util.Calendar;
 
 /**
@@ -12,7 +14,7 @@ public class TimeMsg {
 
     public TimeMsg(Long time) {
         Calendar c = Calendar.getInstance();
-        c.setTimeInMillis(time);
+        c.setTime(Date.from(Instant.ofEpochSecond(time)));
         this.setHour(c.get(Calendar.HOUR_OF_DAY));
         this.setMinute(c.get(Calendar.MINUTE));
     }

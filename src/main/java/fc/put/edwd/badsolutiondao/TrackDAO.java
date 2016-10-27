@@ -1,48 +1,48 @@
-package fc.put.edwd.dao;
+package fc.put.edwd.badsolutiondao;
 
-import fc.put.edwd.dao.message.TimeMsg;
+import fc.put.edwd.dao.UserDAO;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
- * Created by marcin on 22.10.16.
+ * Created by marcin on 26.10.16.
  */
-public class TimeDAO extends BaseDAO{
-    private static TimeDAO instance;
+public class TrackDAO extends BaseDAO{
+    private static TrackDAO instance;
 
-    private static final String INSERT = "INSERT INTO TIME (HOUR, MINUTE) VALUES (?, ?)";
-    private static final String GET = "SELECT * FROM TIME";
+    private static final String INSERT = "INSERT INTO TRACK (SONG_ID, ARTIST, TITLE) VALUES (?, ?, ?)";
+    private static final String GET = "SELECT * FROM TRACK";
 
-    private static final String UNIQUE_IDX = "CREATE TABLE TIME (ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-            " HOUR INTEGER (2) NOT NULL, MINUTE INTEGER (2) NOT NULL)";
+    private TrackDAO(){}
 
-
-    private TimeDAO(){}
-
-    public static TimeDAO getInstance(){
+    public static TrackDAO getInstance(){
         if (instance != null)
             return instance;
         synchronized (UserDAO.class){
             if (instance == null){
-                instance = new TimeDAO();
+                instance = new TrackDAO();
             }
         }
         return instance;
     }
 
-    public void insert(List<TimeMsg> msgList){
+    public void insert(Set<TrackMsg> msgList){
         PreparedStatement stmt = null;
         Connection conn = getConnection();
         try {
             stmt = conn.prepareStatement(INSERT);
             int idx = 1;
-            for (TimeMsg msg : msgList){
+            for (TrackMsg msg : msgList){
                 idx = 1;
-                stmt.setInt(idx++, msg.getHour());
-                stmt.setInt(idx, msg.getMinute());
+                stmt.setString(idx++, msg.getSongId());
+                stmt.setString(idx++, msg.getArtist());
+                stmt.setString(idx, msg.getTitle());
                 stmt.addBatch();
             }
             conn.setAutoCommit(false);
@@ -55,19 +55,21 @@ public class TimeDAO extends BaseDAO{
             closeConn(conn);
         }
     }
-    public Map<TimeMsg, Integer> get(){
+
+    public Map<String, TrackMsg> get(){
         PreparedStatement stmt = null;
         Connection conn = getConnection();
         ResultSet rs = null;
-        Map<TimeMsg, Integer> map = new HashMap<>();
+        Map<String, TrackMsg> map = new HashMap<>();
         try {
             stmt = conn.prepareStatement(GET);
             rs = stmt.executeQuery();
             while (rs.next()){
                 Integer id = rs.getInt("ID");
-                Integer hour = rs.getInt("HOUR");
-                Integer minute = rs.getInt("MINUTE");
-                map.put(new TimeMsg(id, hour, minute), id);
+                String songId = rs.getString("SONG_ID");
+                String artist = rs.getString("ARTIST");
+                String title = rs.getString("TITLE");
+                map.put(songId, new TrackMsg(id, songId, artist, title));
             }
         } catch (SQLException e) {
             e.printStackTrace();

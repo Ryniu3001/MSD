@@ -1,4 +1,4 @@
-package fc.put.edwd.badsolutiondao;
+package fc.put.edwd.beforetransdao;
 
 
 import fc.put.edwd.dao.UserDAO;

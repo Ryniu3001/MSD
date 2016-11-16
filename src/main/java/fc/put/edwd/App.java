@@ -18,8 +18,6 @@ public class App {
 
     public static final String tracksFile = "unique_tracks.txt";
     public static final String sampleFile = "triplets_sample_20p.txt";
-    public static final String SEPARATOR ="<SEP>";
-    public static final String REG_EXP_SEP = "<SEP{1}>";
 
     public static void main(String[] args) throws IOException {
         TimeIt.code(() -> saveSongsAndArtistToDb());

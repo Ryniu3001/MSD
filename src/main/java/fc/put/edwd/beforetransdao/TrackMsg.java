@@ -1,4 +1,4 @@
-package fc.put.edwd.badsolutiondao;
+package fc.put.edwd.beforetransdao;
 
 /**
  * Created by marcin on 26.10.16.
